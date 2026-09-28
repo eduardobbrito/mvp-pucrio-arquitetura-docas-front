@@ -17,8 +17,10 @@ git clone https://github.com/eduardobbrito/mvp-pucrio-arquitetura-docas-front.gi
 
 ### Opção 1 — docker-compose (as duas componentes de uma vez)
 
+O `docker-compose.yml` fica na raiz do repositório da interface (componente principal):
+
 ```bash
-cd mvp-pucrio-arquitetura-docas-api
+cd mvp-pucrio-arquitetura-docas-front
 docker compose up --build
 ```
 
@@ -159,10 +161,10 @@ A interface fica em **http://localhost:3000**. Para subir a API em Docker, veja 
 
 ## Execução com docker-compose (API + interface)
 
-O `docker-compose.yml` que sobe as duas componentes juntas fica no [repositório da API](https://github.com/eduardobbrito/mvp-pucrio-arquitetura-docas-api#execução-com-docker-compose). Clone os dois repositórios lado a lado na mesma pasta e, dentro de `mvp-pucrio-arquitetura-docas-api`, rode:
+O `docker-compose.yml` deste repositório sobe as duas componentes juntas. Clone os dois repositórios lado a lado na mesma pasta ([API](https://github.com/eduardobbrito/mvp-pucrio-arquitetura-docas-api) e interface) e, dentro de `mvp-pucrio-arquitetura-docas-front`, rode:
 
 ```bash
 docker compose up --build
 ```
 
-A interface fica em http://localhost:3000 e a API em http://localhost:5000/openapi.
+A interface fica em http://localhost:3000 e a API em http://localhost:5000/openapi. O banco fica no volume `docas-dados`; para apagar os dados e recomeçar do zero, use `docker compose down -v`.
