@@ -1,0 +1,7 @@
+# Arquivos que não entram no contexto do build
+node_modules
+dist
+.env
+.git
+**/.DS_Store
+docs
