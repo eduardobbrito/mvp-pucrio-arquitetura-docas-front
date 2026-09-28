@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import Carregando from '@/componentes/comuns/Carregando'
+import EstadoVazio from '@/componentes/comuns/EstadoVazio'
 import LayoutApp from '@/componentes/layout/LayoutApp'
 import DetalhePedido from '@/paginas/DetalhePedido'
 import FilaPedidos from '@/paginas/FilaPedidos'
@@ -27,6 +28,8 @@ export default function App() {
             </Suspense>
           }
         />
+        {/* Qualquer outra URL: aviso dentro do layout, com a navegação disponível */}
+        <Route path="*" element={<EstadoVazio titulo="Página não encontrada" descricao="Use a navegação acima para voltar." />} />
       </Route>
     </Routes>
   )

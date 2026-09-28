@@ -33,6 +33,8 @@ export default function FilaPedidos() {
   }
   const pagina = Math.max(1, Number(parametros.get('pagina')) || 1)
   const temFiltro = Boolean(valores.status || valores.uf || valores.q)
+  // Página além da última (ex.: link antigo) também não é "fila vazia"
+  const vazioPorConsulta = temFiltro || pagina > 1
 
   const { data, isLoading, isError, error } = usePedidos({
     ...valores,
@@ -103,15 +105,15 @@ export default function FilaPedidos() {
           )}
 
           {/* Vazio por causa dos filtros é diferente de fila vazia */}
-          {data && data.pedidos.length === 0 && temFiltro && (
+          {data && data.pedidos.length === 0 && vazioPorConsulta && (
             <EstadoVazio
               icone={SearchX}
-              titulo="Nenhum pedido com esses filtros"
-              descricao="Ajuste a busca ou limpe os filtros."
+              titulo="Nenhum pedido encontrado"
+              descricao="Ajuste a busca, limpe os filtros ou volte para a primeira página."
             />
           )}
 
-          {data && data.pedidos.length === 0 && !temFiltro && (
+          {data && data.pedidos.length === 0 && !vazioPorConsulta && (
             <EstadoVazio
               icone={PackageSearch}
               titulo="Nenhum pedido na fila"
@@ -148,6 +150,7 @@ export default function FilaPedidos() {
                         href={`/pedidos/${pedido.id}`}
                         onClick={(evento) => {
                           evento.preventDefault()
+                          evento.stopPropagation() // evita que o clique da linha navegue de novo
                           navegar(`/pedidos/${pedido.id}`)
                         }}
                         className="rounded-sm hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
