@@ -1,12 +1,15 @@
 // Navegacao: barra superior com o nome do sistema e os links das páginas.
-// Tarifas e Painel são próximas etapas e ainda não aparecem aqui.
 import { Anchor } from 'lucide-react'
 import { NavLink, useLocation } from 'react-router-dom'
 
 import { cn } from '@/lib/utils'
 
 // Links exibidos na barra; `ativoEm` lista os prefixos de URL que também ativam o link
-const LINKS = [{ para: '/', rotulo: 'Fila de pedidos', ativoEm: ['/pedidos/'] }]
+const LINKS = [
+  { para: '/', rotulo: 'Fila', ativoEm: ['/pedidos/'] },
+  { para: '/tarifas', rotulo: 'Tarifas', ativoEm: [] },
+  { para: '/painel', rotulo: 'Painel', ativoEm: [] },
+]
 
 export default function Navegacao() {
   const { pathname } = useLocation()

@@ -11,7 +11,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Redireciona para /openapi, onde se escolhe o estilo de documentação. */
+        /**
+         * Redireciona para a documentação
+         * @description Redireciona para /openapi, onde se escolhe o estilo de documentação.
+         */
         get: operations["inicio__get"];
         put?: never;
         post?: never;
@@ -686,7 +689,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -709,7 +712,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -718,7 +721,7 @@ export interface operations {
                     "application/json": components["schemas"]["PedidoDetalheSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -727,7 +730,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"][];
                 };
             };
-            /** @description Not Found */
+            /** @description Não encontrado */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -736,7 +739,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"];
                 };
             };
-            /** @description Conflict */
+            /** @description Conflito com o estado atual (ex.: transição de status inválida) */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -756,7 +759,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -765,7 +768,7 @@ export interface operations {
                     "application/json": components["schemas"]["ListaModalidadesSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -785,7 +788,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -794,7 +797,7 @@ export interface operations {
                     "application/json": components["schemas"]["PainelSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -825,7 +828,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -834,7 +837,7 @@ export interface operations {
                     "application/json": components["schemas"]["ListaPedidosSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -857,7 +860,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -866,7 +869,7 @@ export interface operations {
                     "application/json": components["schemas"]["ImportacaoSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -875,7 +878,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"][];
                 };
             };
-            /** @description Bad Gateway */
+            /** @description Falha em API externa */
             502: {
                 headers: {
                     [name: string]: unknown;
@@ -898,7 +901,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -907,7 +910,7 @@ export interface operations {
                     "application/json": components["schemas"]["PedidoDetalheSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -916,7 +919,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"][];
                 };
             };
-            /** @description Not Found */
+            /** @description Não encontrado */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -939,7 +942,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -948,7 +951,7 @@ export interface operations {
                     "application/json": components["schemas"]["PedidoDetalheSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -957,7 +960,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"][];
                 };
             };
-            /** @description Not Found */
+            /** @description Não encontrado */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -966,7 +969,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"];
                 };
             };
-            /** @description Conflict */
+            /** @description Conflito com o estado atual (ex.: transição de status inválida) */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -989,7 +992,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description Created */
+            /** @description Criado */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -998,7 +1001,7 @@ export interface operations {
                     "application/json": components["schemas"]["ListaCotacoesSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -1007,7 +1010,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"][];
                 };
             };
-            /** @description Not Found */
+            /** @description Não encontrado */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -1016,7 +1019,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"];
                 };
             };
-            /** @description Conflict */
+            /** @description Conflito com o estado atual (ex.: transição de status inválida) */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -1043,7 +1046,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1052,7 +1055,7 @@ export interface operations {
                     "application/json": components["schemas"]["PedidoDetalheSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -1061,7 +1064,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"];
                 };
             };
-            /** @description Not Found */
+            /** @description Não encontrado */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -1070,7 +1073,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"];
                 };
             };
-            /** @description Conflict */
+            /** @description Conflito com o estado atual (ex.: transição de status inválida) */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -1090,7 +1093,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1099,7 +1102,7 @@ export interface operations {
                     "application/json": components["schemas"]["ListaTarifasSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -1123,7 +1126,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Created */
+            /** @description Criado */
             201: {
                 headers: {
                     [name: string]: unknown;
@@ -1132,7 +1135,7 @@ export interface operations {
                     "application/json": components["schemas"]["TarifaSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -1141,7 +1144,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"];
                 };
             };
-            /** @description Conflict */
+            /** @description Conflito com o estado atual (ex.: transição de status inválida) */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -1164,7 +1167,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1173,7 +1176,7 @@ export interface operations {
                     "application/json": components["schemas"]["TarifaSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -1182,7 +1185,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"][];
                 };
             };
-            /** @description Not Found */
+            /** @description Não encontrado */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -1209,7 +1212,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1218,7 +1221,7 @@ export interface operations {
                     "application/json": components["schemas"]["TarifaSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -1227,7 +1230,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"];
                 };
             };
-            /** @description Not Found */
+            /** @description Não encontrado */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -1236,7 +1239,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"];
                 };
             };
-            /** @description Conflict */
+            /** @description Conflito com o estado atual (ex.: transição de status inválida) */
             409: {
                 headers: {
                     [name: string]: unknown;
@@ -1259,7 +1262,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description OK */
+            /** @description Sucesso */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -1268,7 +1271,7 @@ export interface operations {
                     "application/json": components["schemas"]["TarifaRemovidaSchema"];
                 };
             };
-            /** @description Bad Request */
+            /** @description Dados inválidos */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -1277,7 +1280,7 @@ export interface operations {
                     "application/json": components["schemas"]["ErroSchema"][];
                 };
             };
-            /** @description Not Found */
+            /** @description Não encontrado */
             404: {
                 headers: {
                     [name: string]: unknown;

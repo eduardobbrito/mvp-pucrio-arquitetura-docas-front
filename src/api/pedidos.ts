@@ -1,11 +1,12 @@
 // Funções e hooks (TanStack Query) dos pedidos.
 // As páginas usam estes hooks e nunca chamam fetch diretamente.
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 import { ROTULOS_STATUS, comoStatus } from '@/lib/status'
 
 import { atualizar, enviar, montarQuery, obter, remover } from './cliente'
+import { chavePainel } from './painel'
 import type {
   AtualizarStatus,
   FiltrosPedidos,
@@ -34,7 +35,12 @@ export function buscarPedido(id: number) {
 
 /** Hook da fila de pedidos. */
 export function usePedidos(filtros: FiltrosPedidos) {
-  return useQuery({ queryKey: chavesPedidos.lista(filtros), queryFn: () => listarPedidos(filtros) })
+  return useQuery({
+    queryKey: chavesPedidos.lista(filtros),
+    queryFn: () => listarPedidos(filtros),
+    // Mantém a página anterior na tela enquanto a nova carrega (sem "piscar")
+    placeholderData: keepPreviousData,
+  })
 }
 
 /**
@@ -47,6 +53,7 @@ export function useImportarPedidos() {
     mutationFn: () => enviar<Importacao>('/pedidos/importar'),
     onSuccess: (resultado) => {
       clienteConsultas.invalidateQueries({ queryKey: chavesPedidos.todos })
+      clienteConsultas.invalidateQueries({ queryKey: chavePainel })
       if (resultado.importados > 0) {
         toast.success(resultado.mensagem, {
           description: `${resultado.ignorados} pedido(s) já estavam na fila.`,
@@ -75,6 +82,7 @@ export function useCotarPedido(id: number) {
     mutationFn: () => enviar<ListaCotacoes>(`/pedidos/${id}/cotacoes`),
     onSuccess: (resultado) => {
       clienteConsultas.invalidateQueries({ queryKey: chavesPedidos.todos })
+      clienteConsultas.invalidateQueries({ queryKey: chavePainel })
       toast.success(`${resultado.cotacoes.length} cotação(ões) gerada(s)`, {
         description: 'Escolha uma modalidade e contrate o frete.',
       })
@@ -90,6 +98,7 @@ export function useAtualizarStatus(id: number) {
     mutationFn: (corpo: AtualizarStatus) => atualizar<PedidoDetalhe>(`/pedidos/${id}/status`, corpo),
     onSuccess: (pedido) => {
       clienteConsultas.invalidateQueries({ queryKey: chavesPedidos.todos })
+      clienteConsultas.invalidateQueries({ queryKey: chavePainel })
       toast.success(`Pedido marcado como ${ROTULOS_STATUS[comoStatus(pedido.status)].toLowerCase()}`)
     },
     onError: (erro) => toast.error('Falha ao atualizar o status', { description: erro.message }),
@@ -103,6 +112,7 @@ export function useCancelarPedido(id: number) {
     mutationFn: () => remover<PedidoDetalhe>(`/pedidos/${id}`),
     onSuccess: (pedido) => {
       clienteConsultas.invalidateQueries({ queryKey: chavesPedidos.todos })
+      clienteConsultas.invalidateQueries({ queryKey: chavePainel })
       toast.success(`Pedido #${pedido.id_externo} cancelado`)
     },
     onError: (erro) => toast.error('Falha ao cancelar o pedido', { description: erro.message }),

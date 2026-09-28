@@ -4,16 +4,18 @@
 
 Este repositório é a **componente principal** do MVP da disciplina de Arquitetura de Software da pós-graduação em Engenharia de Software da PUC-Rio. A API REST fica em [mvp-pucrio-arquitetura-docas-api](https://github.com/eduardobbrito/mvp-pucrio-arquitetura-docas-api).
 
-Stack: Vite, React 18, TypeScript, React Router, TanStack Query, Tailwind CSS, shadcn/ui (Radix), sonner (toasts) e lucide-react (ícones). Em produção, o build estático é servido por nginx.
+Stack: Vite, React 18, TypeScript, React Router, TanStack Query, Tailwind CSS, shadcn/ui (Radix), recharts (gráfico do painel, via componente Chart do shadcn), sonner (toasts) e lucide-react (ícones). Em produção, o build estático é servido por nginx.
 
 ## Páginas e funcionalidades
 
 | Rota | Página | O que faz |
 |---|---|---|
-| `/` | Fila de pedidos | Tabela com pedido, cliente, destino e distância, itens, peso cobrado, entrega prometida e status. O botão **"Buscar novos pedidos"** importa um lote da loja. Pedidos atrasados ganham o selo **Atrasado** e a linha fica destacada. |
+| `/` | Fila de pedidos | Tabela com pedido, cliente, destino e distância, itens, peso cobrado, entrega prometida e status. Filtros por status e UF, busca por cliente, cidade ou número do pedido (com debounce) e paginação, todos guardados na URL: o link da fila filtrada pode ser compartilhado. O botão **"Buscar novos pedidos"** importa um lote da loja. Pedidos atrasados ganham o selo **Atrasado** e a linha fica destacada. |
 | `/pedidos/:id` | Detalhe do pedido | Cliente e endereço, com aviso quando a BrasilAPI não confirmou o endereço. Mostra peso real, cubado e cobrado, distância e itens. **Cotar frete** gera um cartão por modalidade: selecione um e clique em **Contratar**. **Marcar em trânsito** e **Marcar entregue** avançam o status. **Cancelar pedido** pede confirmação em um diálogo. A linha do tempo mostra os cinco status e o histórico de movimentações. |
+| `/tarifas` | Tarifas | Tabela de frete por faixa de peso e distância, com criação, edição e remoção em diálogos, e a lista de modalidades (econômico, padrão, expresso) com os ajustes de valor e prazo. Um aviso lembra que os valores são ilustrativos e configuráveis. |
+| `/painel` | Painel | Cartões com pedidos aguardando cotação, em trânsito, atrasados e frete médio (com o prazo médio contratado), gráfico de barras do frete médio por região e contagem de pedidos por status. |
 
-Cada ação mostra um toast de sucesso ou a mensagem de erro vinda da API. As listas têm estados de carregamento, erro e vazio. Os status têm cores fixas: recebido em neutro, cotado em alerta, contratado e em trânsito em destaque, entregue em sucesso, cancelado e atrasado em erro.
+Cada ação mostra um toast de sucesso ou a mensagem de erro vinda da API. As listas têm estados de carregamento, erro e vazio. Os status têm cores fixas: recebido em neutro, cotado em alerta, contratado e em trânsito em destaque, entregue em sucesso, cancelado e atrasado em erro. As telas se adaptam a larguras a partir de 360 px: no celular, colunas secundárias das tabelas saem de cena e as informações essenciais continuam visíveis.
 
 ## Arquitetura
 
@@ -26,13 +28,15 @@ Organização do código:
 ```
 src/
   api/          cliente HTTP (cliente.ts), tipos gerados do Swagger e hooks TanStack Query
-  paginas/      FilaPedidos, DetalhePedido
+  paginas/      FilaPedidos, DetalhePedido, Tarifas, Painel
   componentes/
     layout/     LayoutApp, Navegacao
-    pedidos/    SeloStatus, CartaoCotacao, LinhaDoTempo, TabelaItens, BotaoCancelarPedido
-    comuns/     EstadoVazio, Carregando
+    pedidos/    SeloStatus, FiltrosFila, CartaoCotacao, LinhaDoTempo, TabelaItens, BotaoCancelarPedido
+    tarifas/    DialogoTarifa, BotaoRemoverTarifa, TabelaModalidades
+    painel/     CartaoMetrica, GraficoFreteRegiao
+    comuns/     EstadoVazio, Carregando, Paginacao
     ui/         componentes gerados pelo shadcn
-  lib/          formatadores (moeda, data, peso), regras de status, utils do shadcn
+  lib/          formatadores (moeda, data, peso), regras de status, lista de UFs, utils do shadcn
 ```
 
 ## APIs externas do sistema
@@ -50,13 +54,19 @@ A DummyJSON simula a loja: cada *cart* vira um pedido, e os produtos trazem peso
 
 | Método | Rota | Onde é usada |
 |---|---|---|
-| GET | `/pedidos?pagina=1&por_pagina=50` | Fila de pedidos |
+| GET | `/pedidos?status=&uf=&q=&pagina=&por_pagina=` | Fila de pedidos (filtros, busca e paginação) |
 | GET | `/pedidos/{id}` | Detalhe do pedido |
 | POST | `/pedidos/importar` | Botão "Buscar novos pedidos" |
 | POST | `/pedidos/{id}/cotacoes` | Botão "Cotar frete" / "Cotar novamente" |
 | PUT | `/cotacoes/{id}/contratar` | Botão "Contratar" |
 | PUT | `/pedidos/{id}/status` | Botões "Marcar em trânsito" e "Marcar entregue" |
 | DELETE | `/pedidos/{id}` | Botão "Cancelar pedido" |
+| GET | `/tarifas` | Tabela de tarifas |
+| POST | `/tarifas` | Botão "Nova tarifa" |
+| PUT | `/tarifas/{id}` | Botão de editar tarifa |
+| DELETE | `/tarifas/{id}` | Botão de remover tarifa |
+| GET | `/modalidades` | Aba "Modalidades" da tela de tarifas |
+| GET | `/painel` | Painel |
 
 Os tipos TypeScript (`src/api/esquemaOpenapi.ts`) são gerados do Swagger da API. Com a API rodando em `http://localhost:5000`, regenere-os com:
 
@@ -87,4 +97,12 @@ docker run -p 3000:80 docas-front
 
 A interface fica em **http://localhost:3000**. Para subir a API em Docker, veja o [README da API](https://github.com/eduardobbrito/mvp-pucrio-arquitetura-docas-api#execução-com-docker).
 
-O `docker-compose.yml` que sobe API e interface juntas vai ficar no repositório da API. Ele ainda é uma **próxima etapa**; por enquanto, suba cada componente com seu próprio `Dockerfile`.
+## Execução com docker-compose (API + interface)
+
+O `docker-compose.yml` que sobe as duas componentes juntas fica no [repositório da API](https://github.com/eduardobbrito/mvp-pucrio-arquitetura-docas-api#execução-com-docker-compose). Clone os dois repositórios lado a lado na mesma pasta e, dentro de `mvp-pucrio-arquitetura-docas-api`, rode:
+
+```bash
+docker compose up --build
+```
+
+A interface fica em http://localhost:3000 e a API em http://localhost:5000/openapi.
